@@ -1,5 +1,7 @@
+{% load staticfiles %}
+{%load static %}
 <!DOCTYPE html>
-<html>
+<html style= "width:99%;">
 <head>
   <meta charset="utf-8">
 
@@ -10,7 +12,11 @@
   {% endif %}
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  {% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+{% endblock %}
   <!-- Bootstrap -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
   <!-- Material Design for Bootstrap -->
@@ -18,9 +24,13 @@
 
 
 </head>
-<body>
+<body style= "width:99%;">
+    {%block navbar %}
+        {% include 'navbar.html' %}
+    {%endblock%}
+
+
     {% block content %} 
-    
     {%endblock%}
 
     {% block script %}
