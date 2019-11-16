@@ -22,7 +22,16 @@ def register(request):
             #save new user
             user = form.save(commit=False)
             user.password = pass_secure
+
+            
+            
+            
             user.save()
+
+            user_profile = User.get_user(form.cleaned_data['username'])
+            profile = Profile(profile_photo='profile_pic/avatar.png', bio="Add a Bio", user=user_profile) 
+            profile.save()
+            
         return redirect(login_user)
     else:
         form = Registration()
