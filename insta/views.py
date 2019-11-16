@@ -1,13 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import Registration,Login
-from .models import User
+from .models import User,Profile,Image
 from django.contrib.auth.hashers import make_password,check_password
 from django import forms
 from django.contrib.auth import login,logout
 
 # Create your views here.
-@login_required(login_url='/accounts/login')
+@login_required(login_url='/login')
 def home(request):
     return render(request, 'home.html')
 
@@ -48,3 +48,10 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect(login_user)
+
+
+def profile(request, username):
+    user = User.get_user(username)
+    profile = Profile.get_user_profile(user)
+    images = Image.get_profile_images(profile)
+    return render(request,'profile.html',{"profile":profile,"images":images})
