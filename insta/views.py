@@ -45,11 +45,12 @@ def login_user(request):
 
     return render(request,'reg/login.html',{"form":form})
 
+@login_required(login_url='/login')
 def logout_user(request):
     logout(request)
     return redirect(login_user)
 
-
+@login_required(login_url='/login')
 def profile(request, username):
     user = User.get_user(username)
     profile = Profile.get_user_profile(user)

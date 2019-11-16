@@ -36,6 +36,15 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.bio}'
+    
+
+class Comment(models.Model):
+    comment = models.TextField(blank=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.comment}'
+
 
 class Image(models.Model):
     image = models.ImageField(upload_to='uploads/')
@@ -43,6 +52,7 @@ class Image(models.Model):
     caption = models.CharField(max_length=100,blank=True)
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
+    comments = models.ForeignKey(Comment,on_delete=models.CASCADE)
     
     @classmethod
     def get_profile_images(cls,profile):
@@ -52,4 +62,8 @@ class Image(models.Model):
 
     def __str__(self):
         return f'{self.name}'
-    
+
+
+
+
+
