@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^register/$', views.register,name='register'),
     url(r'^login/$', views.login_user, name='login'),
     url(r'^logout/$',views.logout_user,name='logout'),
-    url(r'^profile/(\w+)$', views.profile, name='profile'),
+    url(r'^profile/(\w+)$', views.user_profile, name='profile'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

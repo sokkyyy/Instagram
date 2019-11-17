@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import User 
+from .models import * 
 from django.contrib.auth.hashers import check_password
 
 
@@ -34,6 +34,11 @@ class Login(forms.Form):
             raise forms.ValidationError("Wrong Password")
         return data
 
+class ProfilePhoto(ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ['bio','user']
 
+ 
         
 

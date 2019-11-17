@@ -4,6 +4,11 @@
 <div class="container">
     <p>{{profile.bio}}</p>
     <img src="{{profile.profile_photo.url}}" height="150" width="150">
+    <form  action="{%url 'profile' profile.user.username%}" method="POST" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{photo_form}}
+        <input type="submit" value="submit">
+    </form>
     <div class="container">
         <a>{{followers|length}}- Followers</a>
         <a>{{following|length}}- Following</a>

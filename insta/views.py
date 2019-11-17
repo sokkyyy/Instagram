@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .forms import Registration,Login
+from .forms import Registration,Login,ProfilePhoto
 from .models import User,Profile,Image,Comment,Followers,Following 
 from django.contrib.auth.hashers import make_password,check_password
 from django import forms
@@ -67,7 +67,7 @@ def logout_user(request):
     return redirect(login_user)
 
 @login_required(login_url='/login')
-def profile(request, username):
+def user_profile(request, username):
     user = User.get_user(username)
     profile = Profile.get_user_profile(user)
     images = Image.get_profile_images(profile)
@@ -76,10 +76,25 @@ def profile(request, username):
 
     followers = Followers.get_user_followers(user)
     print(followers[0].followers) 
-    following = Following.get_user_following(user)
+    following = Following.get_user_following(user)    
+
+    if request.method == 'POST':
+        photo_form = ProfilePhoto(request.POST, request.FILES)
+        if photo_form.is_valid():
+            photo = photo_form.cleaned_data['profile_photo']
+            profile.profile_photo = f'profile_pic/{photo}'
+            profile.save()
+            return redirect(user_profile, profile.user.username)
+    else:
+        photo_form = ProfilePhoto()
+
+
+
+
+
 
 
 
     return render(request,'profile.html',
     {"profile":profile,"images":images,"comments":comments,
-    "followers":followers, "following":following})
+    "followers":followers, "following":following,"photo_form":photo_form})
