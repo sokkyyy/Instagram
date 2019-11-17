@@ -3,6 +3,15 @@
 {%block content %}
 <div class="container">
     <p>{{profile.bio}}</p>
+    <p>{{profile.user.username}}</p>
+
+    {%if user != profile.user %}
+        {% if not is_following %}
+            <a href="{% url 'follow' profile.user.username %}">FOLLOW</a>
+        {%else%}
+            <a href="{%url 'unfollow' profile.user.username%}">UNFOLLOW</a>
+        {%endif%}
+    {%endif%}
     <img src="{{profile.profile_photo.url}}" height="150" width="150">
     <form  action="{%url 'profile' profile.user.username%}" method="POST" enctype="multipart/form-data">
         {%csrf_token%}

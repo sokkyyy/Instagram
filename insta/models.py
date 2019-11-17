@@ -102,10 +102,19 @@ class Following(models.Model):
     following = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='user_following')
     user = models.ForeignKey(User,on_delete=models.CASCADE)
 
+
     @classmethod
     def get_user_following(cls,user):
         following = cls.objects.filter(user=user)
         return following
+    
+    @classmethod
+    def is_user_following(cls,user,profile):
+        if cls.objects.filter(following=profile,user=user):
+            return True
+        else:
+            return False
+
     
     def __unicode__(self):
         return f'{self.user}'

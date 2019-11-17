@@ -12,6 +12,7 @@ def home(request):
     user = request.user
     following = Following.get_user_following(user)
     images = Image.get_following_images(following)
+    
     print(images)
 
 
@@ -71,7 +72,8 @@ def user_profile(request, username):
     user = User.get_user(username)
     profile = Profile.get_user_profile(user)
     images = Image.get_profile_images(profile)
-    print(images)
+    
+    is_following = Following.is_user_following(request.user, profile)
 
     comments= Comment.objects.all()
 
@@ -96,7 +98,8 @@ def user_profile(request, username):
 
     return render(request,'profile.html',
     {"profile":profile,"images":images,"comments":comments,
-    "followers":followers, "following":following,"photo_form":photo_form})
+    "followers":followers, "following":following,"photo_form":photo_form,
+    "is_following":is_following})
 
 def post_pic(request):
     
@@ -118,3 +121,31 @@ def post_pic(request):
 
 
     return render(request,'post-pic.html',{"form":form})
+
+def handle_follow(request,profile_username):
+
+    user_followed = User.get_user(profile_username)
+    profile_followed = Profile.get_user_profile(user_followed) 
+    following = Following(following=profile_followed,user=request.user)
+    following.save()
+
+    user_following = request.user
+    profile_following = Profile.get_user_profile(user_following)
+    follower = Followers(followers=profile_following,user=user_followed)
+    follower.save()
+
+
+    return redirect(user_profile,profile_username)
+
+def handle_unfollow(request,profile_username):
+    user_followed = User.get_user(profile_username)
+    profile_followed = Profile.get_user_profile(user_followed)
+
+    Following.objects.filter(following=profile_followed,user=request.user).delete()
+    
+    user_following = request.user
+    profile_following = Profile.get_user_profile(user_following)
+    Followers.objects.filter(followers=profile_following,user=user_followed).delete()
+
+    
+    return redirect(user_profile,profile_username)

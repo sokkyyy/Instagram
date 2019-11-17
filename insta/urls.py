@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^logout/$',views.logout_user,name='logout'),
     url(r'^profile/(\w+)$', views.user_profile, name='profile'),
     url(r'^new/post/$', views.post_pic,name='new_post'),
+    url(r'^follow/(\w+)$',views.handle_follow,name='follow'),
+    url(r'^unfollow/(\w+)$', views.handle_unfollow,name='unfollow'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
