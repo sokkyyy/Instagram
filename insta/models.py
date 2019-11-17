@@ -53,7 +53,17 @@ class Image(models.Model):
     def get_profile_images(cls,profile):
         images = cls.objects.filter(profile=profile)
         return images
+    
+    @classmethod
+    def get_following_images(cls,profiles):
+        images = []
+        for profile in profiles:
+            image = cls.get_profile_images(profile.following)
 
+            if image:
+                for img in image:
+                    images.append(img)
+        return images
 
     def __str__(self):
         return f'{self.name}'

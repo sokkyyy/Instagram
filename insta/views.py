@@ -7,9 +7,16 @@ from django import forms
 from django.contrib.auth import login,logout
 
 # Create your views here.
-@login_required(login_url='/login')
+@login_required(login_url='/login') 
 def home(request):
-    return render(request, 'home.html')
+    user = request.user
+    following = Following.get_user_following(user)
+    images = Image.get_following_images(following)
+    print(images)
+
+
+
+    return render(request, 'home.html',{"images":images})
 
 def register(request):
 
@@ -68,6 +75,7 @@ def profile(request, username):
     comments= Comment.objects.all()
 
     followers = Followers.get_user_followers(user)
+    print(followers[0].followers) 
     following = Following.get_user_following(user)
 
 

@@ -6,7 +6,9 @@
 {% block content %}
 <div class="container">
     <div class="row home">
-        <p>Instagram</p>
+        {%for image in images %}
+        <img src="{{image.image.url}}" height="100" width="100">
+        {%endfor%}
     </div>
 </div>
 {%endblock%}
