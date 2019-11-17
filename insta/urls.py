@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^login/$', views.login_user, name='login'),
     url(r'^logout/$',views.logout_user,name='logout'),
     url(r'^profile/(\w+)$', views.user_profile, name='profile'),
+    url(r'^new/post/$', views.post_pic,name='new_post'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
