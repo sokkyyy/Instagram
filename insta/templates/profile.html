@@ -4,11 +4,20 @@
 <div class="container">
     <p>{{profile.bio}}</p>
     <img src="{{profile.profile_photo.url}}" height="150" width="150">
+    <div class="container">
+        <a>{{followers|length}}- Followers</a>
+        <a>{{following|length}}- Following</a>
+    </div>
 </div>
 <div class="container">
     {%if images %}
     {%for image in images%}
-        <img src="{{image.image.url}}" height="150" width="150">
+    <img src="{{image.image.url}}" height="150" width="150">
+    {%for comment in comments %}
+        {%if comment.image == image %}
+            <p>{{comment.user.username}} - {{comment.comment}}</p>
+        {%endif%}
+    {%endfor%}
     {% endfor %}
     {%else%}
     <p>No images</p>

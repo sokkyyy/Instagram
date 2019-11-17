@@ -26,8 +26,7 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    following = models.IntegerField(default=0)
-    followers = models.IntegerField(default=0)
+
 
     @classmethod
     def get_user_profile(cls,user):
@@ -38,12 +37,7 @@ class Profile(models.Model):
         return f'{self.bio}'
     
 
-class Comment(models.Model):
-    comment = models.TextField(blank=True)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f'{self.comment}'
 
 
 class Image(models.Model):
@@ -52,7 +46,8 @@ class Image(models.Model):
     caption = models.CharField(max_length=100,blank=True)
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
-    comments = models.ForeignKey(Comment,on_delete=models.CASCADE)
+    posted = models.DateTimeField(auto_now_add=True)
+    
     
     @classmethod
     def get_profile_images(cls,profile):
@@ -66,4 +61,41 @@ class Image(models.Model):
 
 
 
+class Comment(models.Model):
+    comment = models.TextField(blank=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    image = models.ForeignKey(Image,on_delete=models.CASCADE)
 
+    
+
+
+    def __str__(self):
+        return f'{self.comment}'
+    
+    
+class Followers(models.Model):
+    
+    followers = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='user_followers')
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    @classmethod
+    def get_user_followers(cls,user):
+        followers = cls.objects.filter(user=user)
+        return followers
+
+
+
+    def __unicode__(self):
+        return f'{self.user}'
+
+class Following(models.Model):
+    following = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='user_following')
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    @classmethod
+    def get_user_following(cls,user):
+        following = cls.objects.filter(user=user)
+        return following
+    
+    def __unicode__(self):
+        return f'{self.user}'

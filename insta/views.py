@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import Registration,Login
-from .models import User,Profile,Image
+from .models import User,Profile,Image,Comment,Followers,Following 
 from django.contrib.auth.hashers import make_password,check_password
 from django import forms
 from django.contrib.auth import login,logout
@@ -64,4 +64,14 @@ def profile(request, username):
     user = User.get_user(username)
     profile = Profile.get_user_profile(user)
     images = Image.get_profile_images(profile)
-    return render(request,'profile.html',{"profile":profile,"images":images})
+
+    comments= Comment.objects.all()
+
+    followers = Followers.get_user_followers(user)
+    following = Following.get_user_following(user)
+
+
+
+    return render(request,'profile.html',
+    {"profile":profile,"images":images,"comments":comments,
+    "followers":followers, "following":following})
