@@ -2,43 +2,117 @@
 
 {%block content %}
 <div class="container">
-    <p>{{profile.bio}}</p>
-    <p>{{profile.user.username}}</p>
-    <a href="{% url 'edit_profile' %}"><i class="fas fa-user-edit"></i></a>
-<div class="container">
-    {%if user != profile.user %}
-        {% if not is_following %}
-            <a href="{% url 'follow' profile.user.username %}">FOLLOW</a>
-        {%else%}
-            <a href="{%url 'unfollow' profile.user.username%}">UNFOLLOW</a>
-        {%endif%}
-    {%endif%}
-    <img src="{{profile.profile_photo.url}}" height="150" width="150">
-    <form  action="{%url 'profile' profile.user.username%}" method="POST" enctype="multipart/form-data">
-        {%csrf_token%}
-        {{photo_form}}
-        <input type="submit" value="submit">
-    </form>
-    <div class="container">
-        <a>{{followers|length}}- Followers</a>
-        <a>{{following|length}}- Following</a>
+    <div class="row" style="display: flex;">
+        <div class="col-sm-4"style="padding-left: 150px; margin-top:70px;">
+            <img src="{{profile.profile_photo.url}}" height="150" width="150" class="rounded-circle" data-toggle="modal" data-target="#exampleModalCenter">
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+
+            <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            
+            
+              <div class="modal-content">
+                <div class="modal-header">
+                {% if user == profile.user %}
+                  <h5 class="modal-title" id="exampleModalLongTitle">Change Profile Picture</h5>
+                {%else%}
+                  <h5 class="modal-title" id="exampleModalLongTitle">Profile picture for <span style="font-weight: bold;">{{profile.user.username}}</span></h5>
+                {%endif%}
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    {% if user == profile.user %}
+                    <form  action="{%url 'profile' profile.user.username%}" method="POST" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        {{photo_form}}                    
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>
+                    {%else%}
+                    <img src="{{profile.profile_photo.url}}" width="450" height="200">
+                    {%endif%}
+                </div>
+                
+              </div>
+            </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-sm-4" style="margin-top:70px;">
+
+            <span style="font-weight: 400; font-size: 33px;">{{profile.user.username}}</span>
+            {% if user == profile.user %}
+            
+            <a href="{% url 'edit_profile' %}" 
+            style="border: 1px solid grey; border-radius: 2px; margin-left: 20px;
+            display: inline-block; height: 30px; width: 110px;" >
+            <span style="font-weight: 400; color: black; padding-left: 5px;" >Edit Profile</span>
+            <i class="fas fa-user-edit" style="color:black; "></i></a>
+            
+            <a href="{%url 'new_post' %}" style="border: 1px solid grey; border-radius: 2px; margin-left: 50px;
+            display: inline-block; height: 30px; width: 150px;">
+                <span style="font-weight: 400; color: black; padding-left: 5px;">Upload Image</span>
+                <i class="fas fa-file-upload" style="color: black; margin-left:20px"></i>
+            </a>
+            {% else %}
+                {% if not is_following %}
+                <a href="{% url 'follow' profile.user.username %}" 
+                style="border: 1px solid grey; border-radius: 2px; margin-left: 20px;
+                display: inline-block; height: 30px; width: 110px; background-color: rgb(84, 185, 231);" >
+                    <span style="font-weight: bold; color: white; padding-left: 30px;">Follow</span>
+                </a>
+                {%else%}
+                <a href="{%url 'unfollow' profile.user.username%}"
+                style="border: 1px solid grey; border-radius: 2px; margin-left: 20px;
+                display: inline-block; height: 30px; width: 110px;" >
+                    <span style="font-weight: 400; color: black; padding-left: 5px;">Following</span>
+                </a>
+                {%endif%}
+            {%endif%}
+            <div class="" style="margin:10px;">
+                <span style="font-size:17px; "><span style="font-weight: bold;" >{{images|length}}</span> posts</span>
+                <span style="font-size:17px; margin-left: 30px;"><span style="font-weight: bold;">{{followers|length}}</span> Followers</span>
+                <span style="font-size:17px; margin-left: 30px;"><span style="font-weight: bold;">{{following|length}}</span> Following</span>
+            </div>
+            <div>
+                <p style="font-size: 17px; font-weight: 400;">{{profile.user.full_name}}</p>
+                <p style="font-size: 17px;">{{profile.bio}}</p>
+            </div>
+
+        </div>
     </div>
-    <a href="{%url 'new_post' %}">Post Pic</a>
 </div>
-</div>
-<div class="container">
-    {%if images %}
-    {%for image in images%}
-    <img src="{{image.image.url}}" height="150" width="150">
-    {%for comment in comments %}
-        {%if comment.image == image %}
-            <p>{{comment.user.username}} - {{comment.comment}}</p>
+
+<div class="container" >
+    <div class="row" style="margin-left: 120px;">
+        {%if images %}
+            {%for image in images%}
+            <div class="col-sm-3 view overlay" style="background-image: url({{image.image.url}});  
+            background-position: center; background-repeat: no-repeat; background-size: cover;
+            height:300px; margin:10px; width: 350px;">
+                <a href="#!">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+                <div class="mask rgba-black-strong flex-center waves-effect waves-light">
+                    <p class="white-text" style="font-weight: bold;">
+                        <i class="fas fa-heart"></i><span style="margin: 10px;">{{image.likes}}</span>
+                    </p>
+                </div>
+
+            </div>
+            {% endfor %}
+        {%else%}
+        <p>No images</p>
         {%endif%}
-    {%endfor%}
-    {% endfor %}
-    {%else%}
-    <p>No images</p>
-    {%endif%}
+
+    </div>
 </div>
 
 {%endblock%}
