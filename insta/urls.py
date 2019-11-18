@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^new/post/$', views.post_pic,name='new_post'),
     url(r'^follow/(\w+)$',views.handle_follow,name='follow'),
     url(r'^unfollow/(\w+)$', views.handle_unfollow,name='unfollow'),
+    url(r'^like/(\d+)$',views.handle_like,name='like'),
+    url(r'^unlike/(\d+)$',views.handle_unlike,name='unlike'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

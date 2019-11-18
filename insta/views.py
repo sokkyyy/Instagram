@@ -1,19 +1,25 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import Registration,Login,ProfilePhoto,PostPic
-from .models import User,Profile,Image,Comment,Followers,Following 
+from .models import User,Profile,Image,Comment,Followers,Following,Like 
 from django.contrib.auth.hashers import make_password,check_password
 from django import forms
 from django.contrib.auth import login,logout
 from django.db import IntegrityError
+from django.http import HttpResponseRedirect
+
+
 # Create your views here.
 @login_required(login_url='/login') 
 def home(request):
     user = request.user
+    profile = Profile.get_user_profile(user)
     following = Following.get_user_following(user)
-    images = Image.get_following_images(following)
-    
+    images_following = Image.get_following_images(following)
+
+    images = Like.has_user_liked(images_following,profile)
     print(images)
+    
 
 
 
@@ -30,9 +36,6 @@ def register(request):
             #save new user
             user = form.save(commit=False)
             user.password = pass_secure
-
-            
-            
             
             user.save()
 
@@ -149,3 +152,29 @@ def handle_unfollow(request,profile_username):
 
     
     return redirect(user_profile,profile_username)
+
+def handle_like(request,image_id):
+    user = request.user
+    user_profile = Profile.get_user_profile(user)
+
+    image = Image.objects.get(pk=image_id)
+    like_image = Like(user_profile=user_profile,image_liked=image)
+    like_image.save()
+
+    image.likes += 1
+    image.save()
+    return redirect(home)
+
+def handle_unlike(request,image_id):
+    user = request.user
+    user_profile = Profile.get_user_profile(user)
+
+    image = Image.objects.get(pk=image_id)
+    Like.objects.filter(user_profile=user_profile,image_liked=image).delete()
+
+
+    image.likes -= 1
+    image.save()
+    
+    return redirect(home)
+

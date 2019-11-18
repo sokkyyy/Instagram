@@ -47,13 +47,15 @@ class Image(models.Model):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
     posted = models.DateTimeField(auto_now_add=True)
+    user_liked = models.BooleanField(default=False)
     
+
     
     @classmethod
     def get_profile_images(cls,profile):
         images = cls.objects.filter(profile=profile)
         return images
-    
+
     @classmethod
     def get_following_images(cls,profiles):
         images = []
@@ -118,3 +120,19 @@ class Following(models.Model):
     
     def __unicode__(self):
         return f'{self.user}'
+
+class Like(models.Model):
+    user_profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    image_liked = models.ForeignKey(Image, on_delete=models.CASCADE)
+
+    @classmethod
+    def has_user_liked(cls,images,profile):
+        for image in images:
+            if cls.objects.filter(user_profile=profile,image_liked=image):
+                image.user_liked = True
+            else:
+                image.user_liked = False
+        return images
+
+    def __unicode__(self):
+        return f'{self.image_liked}' 
