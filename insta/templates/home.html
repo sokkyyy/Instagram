@@ -4,17 +4,56 @@
 
 
 {% block content %}
-<div class="container">
+<div class="container" >
     <div class="row home">
         {%for image in images %}
-        <img src="{{image.image.url}}" height="100" width="100">
-        <span>{{image.likes}}</span>
-                {%if not image.user_liked%}
-                <a href="{% url 'like' image.id%}">LIKE</a>
-                {%else%}
-                <a href="{%url 'unlike' image.id %}">UNLIKE</a>
-                {%endif%}
-        
+        <div class="card" style="height: 800px; width: 700px;margin: 10px; margin-left: 200px;">
+            <div class="card-header">
+                <a href="{% url 'profile' image.profile.user.username %}"><img src="{{image.profile.profile_photo.url}}" class="rounded float-left" alt="ppic" height="30" width="30">
+                    <span style="margin-left:20px; color:black;font-weight: bold;">{{image.profile.user.username}}</span></a>
+            </div>
+            <div class="view overlay" style="background-image: url({{image.image.url}});  
+            background-position: center; background-repeat: no-repeat; background-size: cover;
+            height:600px">
+                <a href="#!">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+                <div class="mask flex-center waves-effect waves-light">
+                    <p class="white-text">{{image.name}}</p>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div>
+                    {%if not image.user_liked%}
+                    <a href="{% url 'like' image.id%}"><i class="far fa-heart" style="color: black;font-size: 30px; margin:5px;"></i></a>
+                    <i class="far fa-comment" style="font-size: 30px;"></i>
+                    {%else%}
+                    <a href="{%url 'unlike' image.id %}"><i class="fas fa-heart" style="color: red; font-size: 30px;margin:5px;"></i></a>
+                    <i class="far fa-comment" style="font-size: 30px;"></i>
+                    {%endif%}
+
+
+
+                    {% if image.likes != 1 %}
+                    <p style="font-weight: bold;">{{image.likes}} likes</p>
+                    {%else%}
+                    <p style="font-weight: bold;">{{image.likes}} like</p>
+                    {%endif%}
+
+
+                </div>
+                <a style="font-weight: bold;">{{image.profile.user.username}}</a> <span>{{image.caption}}</span>
+                <div>
+                    {%for comment in comments %}
+                        {%if comment.image == image %}
+                            <p>{{comment.user.username}} - {{comment.comment}}</p>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+               
+            </div>
+        </div>
         {%endfor%}
 
     </div>

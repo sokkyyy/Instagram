@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .forms import Registration,Login,ProfilePhoto,PostPic
+from .forms import Registration,Login,ProfilePhoto,PostPic,EditProfile
 from .models import User,Profile,Image,Comment,Followers,Following,Like 
 from django.contrib.auth.hashers import make_password,check_password
 from django import forms
@@ -178,3 +178,42 @@ def handle_unlike(request,image_id):
     
     return redirect(home)
 
+def edit_profile(request):
+
+    user = request.user
+    profile = Profile.get_user_profile(user)
+
+
+    
+    if request.method == 'POST':
+        edit_form = EditProfile(request.POST, request.FILES)
+        if edit_form.is_valid():
+            
+            profile_pic = edit_form.cleaned_data['profile_photo']
+            if profile_pic:
+                profile.profile_photo = f'profile_pic/{profile_pic}'
+            
+            bio = edit_form.cleaned_data['bio']
+            if bio:
+                profile.bio = bio
+            
+            profile.save()
+            try:
+                edit_form.save()
+            except IntegrityError:
+                return redirect(user_profile, profile.user.username)
+    else:
+        form = EditProfile()
+    return render(request, 'edit_profile.html',
+    {"form":form}) 
+
+def search(request):
+    if 'search' in request.GET and request.GET['search']:
+        search_term = request.GET.get('search')
+
+        images = Image.search_images_caption(search_term)
+        users = User.search_username(search_term)
+
+        return render(request, 'search.html',{'images':images,"users":users})
+    else:
+        return render(request, 'search.html')

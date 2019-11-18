@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% if users%}
+      <h2>Found {{ users|length }} users </h2>
+    {% else %}
+      <h2> Found 0 users </h2>
+    {% endif %}
+
+</div>
+<div class="container">
+   {% if images%}
+     <h2>Found {{ images|length }} images</h2>
+   {% else %}
+     <h2> Found 0 images</h2>
+   {% endif %}
+</div>
+{% endblock %}

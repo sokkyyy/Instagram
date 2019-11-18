@@ -13,7 +13,11 @@ class User(AbstractUser):
         except ObjectDoesNotExist:
             user = ''
         return user
-
+    
+    @classmethod
+    def search_username(cls,search_term):
+        users = cls.objects.filter(username__icontains = search_term)
+        return users     
 
     def __str__(self):
         return f'{self.full_name}'
@@ -66,6 +70,11 @@ class Image(models.Model):
                 for img in image:
                     images.append(img)
         return images
+
+    @classmethod
+    def search_images_caption(cls,search_term):
+        images = cls.objects.filter(caption__icontains = search_term)
+        return images 
 
     def __str__(self):
         return f'{self.name}'

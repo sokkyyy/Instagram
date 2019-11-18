@@ -4,7 +4,8 @@
 <div class="container">
     <p>{{profile.bio}}</p>
     <p>{{profile.user.username}}</p>
-
+    <a href="{% url 'edit_profile' %}"><i class="fas fa-user-edit"></i></a>
+<div class="container">
     {%if user != profile.user %}
         {% if not is_following %}
             <a href="{% url 'follow' profile.user.username %}">FOLLOW</a>
@@ -23,6 +24,7 @@
         <a>{{following|length}}- Following</a>
     </div>
     <a href="{%url 'new_post' %}">Post Pic</a>
+</div>
 </div>
 <div class="container">
     {%if images %}

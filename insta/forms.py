@@ -42,7 +42,10 @@ class ProfilePhoto(ModelForm):
 class PostPic(ModelForm):
     class Meta:
         model = Image
-        exclude = ['profile','likes','posted']
+        exclude = ['profile','likes','posted','user_liked']
  
         
-
+class EditProfile(ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ['user'] 
