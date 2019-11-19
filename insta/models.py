@@ -34,8 +34,20 @@ class Profile(models.Model):
 
     @classmethod
     def get_user_profile(cls,user):
-        profile = cls.objects.get(user=user)
+        try:
+            profile = cls.objects.get(user=user)
+        except ObjectDoesNotExist:
+            return None
         return profile
+    @classmethod
+    def get_user_profiles(cls,users):
+        profiles = []
+        for user in users:
+            profile = cls.get_user_profile(user)
+            if profile == None:
+                continue
+            profiles.append(profile)
+        return profiles
 
     def __str__(self):
         return f'{self.bio}'

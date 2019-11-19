@@ -212,8 +212,9 @@ def search(request):
         search_term = request.GET.get('search')
 
         images = Image.search_images_caption(search_term)
+        
         users = User.search_username(search_term)
-
-        return render(request, 'search.html',{'images':images,"users":users})
+        profiles = Profile.get_user_profiles(users)
+        return render(request, 'search.html',{'images':images,"profiles":profiles})
     else:
         return render(request, 'search.html')

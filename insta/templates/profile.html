@@ -96,14 +96,44 @@
             {%for image in images%}
             <div class="col-sm-3 view overlay" style="background-image: url({{image.image.url}});  
             background-position: center; background-repeat: no-repeat; background-size: cover;
-            height:300px; margin:10px; width: 350px;">
-                <a href="#!">
+            height:300px; margin:10px; width: 350px;" data-toggle="modal" data-target="#modal-image-details{{image.id}}">
+                <a href="#!" >
                     <div class="mask rgba-white-slight"></div>
                 </a>
                 <div class="mask rgba-black-strong flex-center waves-effect waves-light">
                     <p class="white-text" style="font-weight: bold;">
                         <i class="fas fa-heart"></i><span style="margin: 10px;">{{image.likes}}</span>
                     </p>
+                </div>
+
+                <div class="modal fade bd-example-modal-lg" role="document" aria-labelledby="myLargeModalLabel"
+                  aria-hidden="true" id="modal-image-details{{image.id}}">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-6 col-example" style="background-image: url({{image.image.url}});  
+                                    background-position: center; background-repeat: no-repeat; background-size: cover;
+                                    height:600px;"
+                                    >
+                                        
+                                    </div>
+                                    <div class="col-md-4 col-example">
+                                        <span style="font-weight: bold;">{{profile.user.username}}</span>
+                                        <span>{{image.caption}}</span>
+                                        <div>
+                                            {%for comment in comments %}
+                                                {%if comment.image == image %}
+                                                    <p>{{comment.user.username}} - {{comment.comment}}</p>
+                                                {%endif%}
+                                            {%endfor%}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      ...
+                    </div>
+                  </div>
                 </div>
 
             </div>
