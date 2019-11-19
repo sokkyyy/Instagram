@@ -7,7 +7,7 @@ from django import forms
 from django.contrib.auth import login,logout
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-
+from .email import send_welcome_email
 
 # Create your views here.
 @login_required(login_url='/login') 
@@ -42,6 +42,8 @@ def register(request):
             user_profile = User.get_user(form.cleaned_data['username'])
             profile = Profile(profile_photo='profile_pic/avatar.png', bio="Add a Bio", user=user_profile) 
             profile.save()
+
+            send_welcome_email(user.username,user.email)
             
         return redirect(login_user)
     else:
@@ -165,6 +167,7 @@ def handle_like(request,image_id):
     image.save()
     return redirect(home)
 
+
 def handle_unlike(request,image_id):
     user = request.user
     user_profile = Profile.get_user_profile(user)
@@ -177,6 +180,7 @@ def handle_unlike(request,image_id):
     image.save()
     
     return redirect(home)
+
 
 def handle_like_comment(request,image_id):
     user = request.user
