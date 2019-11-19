@@ -65,8 +65,16 @@ class Image(models.Model):
     posted = models.DateTimeField(auto_now_add=True)
     user_liked = models.BooleanField(default=False)
     
+    def save_image(self):
+        self.save()
 
+    def update_caption(self,caption):
+        self.caption = caption
+        self.save_image()
     
+    def delete_image(self):
+        self.delete()
+
     @classmethod
     def get_profile_images(cls,profile):
         images = cls.objects.filter(profile=profile)
@@ -147,6 +155,7 @@ class Like(models.Model):
 
     @classmethod
     def has_user_liked(cls,images,profile):
+        
         for image in images:
             if cls.objects.filter(user_profile=profile,image_liked=image):
                 image.user_liked = True

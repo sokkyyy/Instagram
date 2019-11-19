@@ -19,7 +19,7 @@
                     <div class="mask rgba-white-slight"></div>
                 </a>
                 <div class="mask rgba-black-strong flex-center waves-effect waves-light">
-                    <p class="white-text">{{image.name}}</p>
+                    <p class="white-text"><a href='{% url "comment" image.id %}'>{{image.name}}</a></p>
                 </div>
             </div>
 

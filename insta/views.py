@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .forms import Registration,Login,ProfilePhoto,PostPic,EditProfile,CommentForm
+from .forms import Registration,Login,ProfilePhoto,PostPic,EditProfile,CommentForm,UpdateCaption
 from .models import User,Profile,Image,Comment,Followers,Following,Like
 from django.contrib.auth.hashers import make_password,check_password
 from django import forms
@@ -17,8 +17,8 @@ def home(request):
     following = Following.get_user_following(user)
     images_following = Image.get_following_images(following)
 
+
     images = Like.has_user_liked(images_following,profile)
-    print(images)
     
 
 
@@ -178,6 +178,35 @@ def handle_unlike(request,image_id):
     
     return redirect(home)
 
+def handle_like_comment(request,image_id):
+    user = request.user
+    user_profile = Profile.get_user_profile(user)
+
+    image = Image.objects.get(pk=image_id)
+    like_image = Like(user_profile=user_profile,image_liked=image)
+    like_image.save()
+
+    image.likes += 1
+    image.save()
+    return redirect(comment_image,image_id)
+
+def handle_unlike_comment(request,image_id):
+    user = request.user
+    user_profile = Profile.get_user_profile(user)
+
+    image = Image.objects.get(pk=image_id)
+    Like.objects.filter(user_profile=user_profile,image_liked=image).delete()
+
+
+    image.likes -= 1
+    image.save()
+    
+    return redirect(comment_image,image_id)
+
+
+
+
+
 def edit_profile(request):
 
     user = request.user
@@ -220,8 +249,13 @@ def search(request):
         return render(request, 'search.html')
 
 def comment_image(request, image_id):
-    image = Image.objects.get(pk=image_id)
+    find_image = Image.objects.get(pk=image_id)
+    
     profile = Profile.get_user_profile(request.user)
+    image_liked = Like.has_user_liked([find_image],profile)
+    image = image_liked[0]
+
+    
     comments = Comment.objects.all()
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -235,5 +269,22 @@ def comment_image(request, image_id):
             return redirect(comment_image, image_id)
 
     form = CommentForm()
+    update_form = UpdateCaption()
 
-    return render(request, 'comment.html',{"image":image,"form":form,"comments":comments})
+    return render(request, 'comment.html',{"image":image,"form":form,"comments":comments,"update_form":update_form,})
+
+def update_bio(request,image_id):
+
+    image = Image.objects.get(pk=image_id)
+    print(image)
+    if request.method == 'POST':
+        form = UpdateCaption(request.POST)
+        if form.is_valid():
+            caption = form.cleaned_data['caption']
+            image.update_caption(caption)
+            return redirect(comment_image,image_id)
+
+def image_delete(request,image_id):
+    image = Image.objects.get(pk=image_id)
+    image.delete_image()
+    return redirect(user_profile, request.user.username)

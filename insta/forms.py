@@ -71,7 +71,14 @@ class EditProfile(ModelForm):
         widgets = {
             'bio':forms.Textarea(attrs={'rows':2, 'cols':43}),
         }
-
+        
+class UpdateCaption(ModelForm):
+    class Meta:
+        model = Image
+        fields = ['caption'] 
+        widgets = {
+            'caption': forms.TextInput(attrs={'class': "form-control form-control-sm"})
+        }
 
 class CommentForm(ModelForm):
     class Meta:

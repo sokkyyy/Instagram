@@ -16,6 +16,10 @@ urlpatterns = [
     url(r'^edit/profile/$',views.edit_profile,name='edit_profile'), 
     url(r'^search/$',views.search,name='search'),
     url(r'^view/pic/(\d+)$',views.comment_image,name='comment'),
+    url(r'^update/image/caption/(\d+)$',views.update_bio,name='update_bio'),
+    url(r'^image/delete/(\d+)$', views.image_delete, name="delete_image"),
+    url(r'^like/comment/(\d+)$',views.handle_like_comment,name='like_comment'),
+    url(r'^unlike/comment/(\d+)$', views.handle_unlike_comment, name='unlike_comment'),
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -49,7 +49,7 @@
                   <span style="margin: 10px;">
                     <a href="{% url 'profile' user.username %}" class="white-text">
                       <i class="fas fa-heart"></i> {{image.likes}} </a>
-                      <i class="far fa-comment"></i>
+                      <a class="white-text viewImage" href="{%url 'comment' image.id%}">View Image</a>
                   </span>
               </p>
           </div> 
