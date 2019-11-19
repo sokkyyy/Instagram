@@ -57,6 +57,10 @@ class PostPic(ModelForm):
     class Meta:
         model = Image
         exclude = ['profile','likes','posted','user_liked']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': "form-control form-control-sm"}),
+            'caption': forms.TextInput(attrs={'class': "form-control form-control-sm"}),
+        }
 
  
         
@@ -64,6 +68,9 @@ class EditProfile(ModelForm):
     class Meta:
         model = Profile
         exclude = ['user'] 
+        widgets = {
+            'bio':forms.Textarea(attrs={'rows':2, 'cols':43}),
+        }
 
 
 class CommentForm(ModelForm):

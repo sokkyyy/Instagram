@@ -5,6 +5,9 @@
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4 card" style="margin-top: 50px;">
+            <div class="card-header">
+                <h5 class="text-center">UPLOAD IMAGE</h5>
+            </div>
             <form class="md-form" action="{%url 'new_post'%}" method="POST" enctype="multipart/form-data">
                 {%csrf_token%}
 
@@ -22,13 +25,13 @@
                         {{form.caption}}
                     </div>
                 </div>
-                <div class="file-field">
+                <div class="file-field" >
                         <div class="btn btn-primary btn-sm float-left">
-                          <span>Choose Image</span>
-                          {{form.image}}
+                          <span style="font-size: 16px;font-weight: bold;padding-right: 5px;">IMAGE:</span>
+                          <span>{{form.image}}</span>
                         </div>
-                </div>
-                <div style="margin-left: 120px;">
+                    </div>
+                <div style="margin-left: 100px;">
                     <input type="submit" value="Upload" class="btn purple-gradient">
 
                 </div>

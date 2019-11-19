@@ -11,13 +11,13 @@
           <div class="col-sm-2 view overlay" style="background-image: url({{profile.profile_photo.url}});  
           background-position: center; background-repeat: no-repeat; background-size: cover;
           height:250px">
-            <a >
+            <a>
                 <div class="mask rgba-white-slight"></div>
             </a>
             <div class="mask rgba-black-strong flex-center waves-effect waves-light">
                 <p class="white-text" style="font-weight: bold;">
                     <span style="margin: 10px;">
-                      <a href="{% url 'profile' user.username %}" class="white-text"> @{{profile.user.username}} </a>
+                      <a href="{% url 'profile' profile.user.username %}" class="white-text"> @{{profile.user.username}} </a>
                     </span>
                 </p>
             </div>        
