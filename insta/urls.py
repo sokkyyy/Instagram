@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^like/(\d+)$',views.handle_like,name='like'),
     url(r'^unlike/(\d+)$',views.handle_unlike,name='unlike'),
     url(r'^edit/profile/$',views.edit_profile,name='edit_profile'), 
-    url(r'^search/$',views.search,name='search')
+    url(r'^search/$',views.search,name='search'),
+    url(r'^view/pic/(\d+)$',views.comment_image,name='comment'),
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

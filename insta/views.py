@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from .forms import Registration,Login,ProfilePhoto,PostPic,EditProfile
-from .models import User,Profile,Image,Comment,Followers,Following,Like 
+from .forms import Registration,Login,ProfilePhoto,PostPic,EditProfile,CommentForm
+from .models import User,Profile,Image,Comment,Followers,Following,Like
 from django.contrib.auth.hashers import make_password,check_password
 from django import forms
 from django.contrib.auth import login,logout
@@ -218,3 +218,22 @@ def search(request):
         return render(request, 'search.html',{'images':images,"profiles":profiles})
     else:
         return render(request, 'search.html')
+
+def comment_image(request, image_id):
+    image = Image.objects.get(pk=image_id)
+    profile = Profile.get_user_profile(request.user)
+    comments = Comment.objects.all()
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.profile = profile
+            comment.image = image
+
+            comment.save()
+
+            return redirect(comment_image, image_id)
+
+    form = CommentForm()
+
+    return render(request, 'comment.html',{"image":image,"form":form,"comments":comments})

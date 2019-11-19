@@ -1,0 +1,55 @@
+{%extends 'base.html' %}
+
+{%block content%}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6" style="background-image: url({{image.image.url}});  
+        background-position: center; background-repeat: no-repeat; background-size: cover;
+        height:500px;margin-top: 20px; "></div>
+        <div class="col-sm-6" style="margin-top: 20px; height:500px">
+            <a href="{% url 'profile' image.profile.user.username%}">
+                <span style="color:black;font-weight: bold;">{{image.profile.user.username}}</span>
+            </a>
+            <span>{{image.caption}}</span>
+            
+
+            <div class="overflow-auto">
+                {%for comment in comments %}
+                    {%if comment.image == image %}
+                    <div class="container" style="margin-bottom:5px">
+                        <a href="{%url 'profile' comment.profile.user.username%}">
+                            <img src="{{comment.profile.profile_photo.url}}" height="30" width="30" class="rounded">
+                        </a>
+                        <span>
+                            <span >
+                                <a style="color:black;font-weight: bold;" href="{%url 'profile' comment.profile.user.username%}">{{comment.profile.user.username}}</a>
+                            </span> 
+                            <span>{{comment.comment}}</span>
+                        </span>
+                    </div>
+                    {%endif%}
+                {%endfor%}
+            </div>
+
+            <div style="margin-top: 300px;">
+                
+                    <div class="md-form" >
+                        <form action="{% url 'comment' image.id%}" method="POST">
+                            {%csrf_token%} 
+                            <div class="fieldWrapper">
+                                <label for="{{ form.comment.id_for_label }}">Post a Comment</label>
+                                {{ form.comment }}
+                            </div>
+                            <input type="submit" value="POST">
+                        </form>
+
+                    </div>
+
+                    
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

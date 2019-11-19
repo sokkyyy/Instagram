@@ -18,7 +18,7 @@
                 <a href="#!">
                     <div class="mask rgba-white-slight"></div>
                 </a>
-                <div class="mask flex-center waves-effect waves-light">
+                <div class="mask rgba-black-strong flex-center waves-effect waves-light">
                     <p class="white-text">{{image.name}}</p>
                 </div>
             </div>
@@ -27,10 +27,10 @@
                 <div>
                     {%if not image.user_liked%}
                     <a href="{% url 'like' image.id%}"><i class="far fa-heart" style="color: black;font-size: 30px; margin:5px;"></i></a>
-                    <i class="far fa-comment" style="font-size: 30px;"></i>
+                    <a href='{% url "comment" image.id %}' style="color: black;"><i class="far fa-comment" style="font-size: 30px;"></i></a>
                     {%else%}
                     <a href="{%url 'unlike' image.id %}"><i class="fas fa-heart" style="color: red; font-size: 30px;margin:5px;"></i></a>
-                    <i class="far fa-comment" style="font-size: 30px;"></i>
+                    <a href='{% url "comment" image.id %}' style="color: black;"><i class="far fa-comment" style="font-size: 30px;"></i></a>
                     {%endif%}
 
 
@@ -47,7 +47,7 @@
                 <div>
                     {%for comment in comments %}
                         {%if comment.image == image %}
-                            <p>{{comment.user.username}} - {{comment.comment}}</p>
+                            <p>{{comment.profile.user.username}} - {{comment.comment}}</p>
                         {%endif%}
                     {%endfor%}
                 </div>

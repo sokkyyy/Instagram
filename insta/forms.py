@@ -49,3 +49,12 @@ class EditProfile(ModelForm):
     class Meta:
         model = Profile
         exclude = ['user'] 
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ['profile','image']
+        widgets = {
+            'comment':forms.Textarea(attrs={'rows':2, 'cols':55}),
+        }
