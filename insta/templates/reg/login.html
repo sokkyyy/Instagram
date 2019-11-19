@@ -2,17 +2,47 @@
 
 {%block content %}
 <div class="container" style="margin-top:100px">
-    {% if form.non_field_errors %}
-        <ul class=''>
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <form action="{% url 'login' %}" role="login" method="POST">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" value="Sign in">
-    </form>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 card" style="padding-top: 20px; height: 300px;">
+            <h5 class="text-center">Log In</h5>
+            {% if form.non_field_errors %}
+                <ul class=''>
+                    {% for error in form.non_field_errors %}
+                        <li class="text-danger">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <form action="{% url 'login' %}" role="login" method="POST">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="md-form">
+                    <div class="fieldWrapper">
+                            {{ form.username.errors }}
+                            <label for="{{ form.username.id_for_label }}">Username</label>
+                            {{ form.username }}
+                    </div>
+                <div>
+                
+                <div class="md-form">
+                    <div class="fieldWrapper" style="width: auto;">
+                            {{ form.password.errors }}
+                            <label for="{{ form.password.id_for_label }}">Password</label>
+                            {{ form.password }}
+                    </div>
+                <div>
+                <div style="margin-left: 100px;margin-top: 20px;padding-bottom: 20px;">
+                    <input type="submit" value="Sign in" class="btn purple-gradient">
+                </div>
+            </form>
+
+
+                <div style="font-weight: 300;">
+                    <span>Don't have an account?</span>
+                    <a href="{%url 'register' %}" class="text-secondary" style="font-weight: 600;">Register Here</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {%endblock%}

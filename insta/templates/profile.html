@@ -55,12 +55,20 @@
             display: inline-block; height: 30px; width: 110px;" >
             <span style="font-weight: 400; color: black; padding-left: 5px;" >Edit Profile</span>
             <i class="fas fa-user-edit" style="color:black; "></i></a>
+
+            <a href="{%url 'logout' %}" style="border: 1px solid grey; border-radius: 2px;
+            display: inline-block; height: 30px; margin-left: 10px;">
+                <i class="fas fa-cog" style="color: black;"></i>
+            </a>
             
             <a href="{%url 'new_post' %}" style="border: 1px solid grey; border-radius: 2px; margin-left: 50px;
             display: inline-block; height: 30px; width: 150px;">
                 <span style="font-weight: 400; color: black; padding-left: 5px;">Upload Image</span>
                 <i class="fas fa-file-upload" style="color: black; margin-left:20px"></i>
             </a>
+
+
+
             {% else %}
                 {% if not is_following %}
                 <a href="{% url 'follow' profile.user.username %}" 

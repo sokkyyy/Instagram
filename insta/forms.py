@@ -20,15 +20,29 @@ class Login(forms.Form):
     username = forms.CharField(max_length=50,label='Username')
     password = forms.CharField(widget=forms.PasswordInput())
 
+    widgets = {
+        'username':forms.TextInput(attrs={'class': "form-control form-control-sm"}),
+        'password':forms.PasswordInput(attrs={'class': "form-control form-control-sm"}),
+    }
+
     def clean_username(self):
-        data = self.cleaned_data['username']
+        try:
+            data = self.cleaned_data['username']
+        except KeyError:
+            raise forms.ValidationError("Wrong Username.")
+
         user = User.get_user(data)
+
         if not user:
             raise forms.ValidationError("Wrong Username.")
         return data
     def clean_password(self):
         data = self.cleaned_data['password']
-        username = self.cleaned_data['username']
+        try:
+            username = self.cleaned_data['username']
+        except:
+            raise forms.ValidationError("Wrong Username.")
+
         user = User.get_user(username)
         if not check_password(data,user.password):
             raise forms.ValidationError("Wrong Password")
@@ -43,6 +57,7 @@ class PostPic(ModelForm):
     class Meta:
         model = Image
         exclude = ['profile','likes','posted','user_liked']
+
  
         
 class EditProfile(ModelForm):
@@ -58,3 +73,5 @@ class CommentForm(ModelForm):
         widgets = {
             'comment':forms.Textarea(attrs={'rows':2, 'cols':55}),
         }
+
+        

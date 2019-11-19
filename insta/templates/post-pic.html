@@ -1,9 +1,39 @@
 {%extends 'base.html' %}
 
 {%block content %}
-<form  action="{%url 'new_post'%}" method="POST" enctype="multipart/form-data">
-    {%csrf_token%}
-    {{form}}
-    <input type="submit" value="submit">
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 card" style="margin-top: 50px;">
+            <form class="md-form" action="{%url 'new_post'%}" method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+
+
+                <div class="md-form" style="margin-top: 20px;">
+                    <div class="fieldWrapper">
+                        <label for="{{ form.name.id_for_label }}">Name</label>
+                        {{form.name}}
+                    </div>
+                </div>
+
+                <div class="md-form">
+                    <div class="fieldWrapper">
+                        <label for="{{ form.caption.id_for_label }}" style="margin-bottom: 5px;">Caption</label>
+                        {{form.caption}}
+                    </div>
+                </div>
+                <div class="file-field">
+                        <div class="btn btn-primary btn-sm float-left">
+                          <span>Choose Image</span>
+                          {{form.image}}
+                        </div>
+                </div>
+                <div style="margin-left: 120px;">
+                    <input type="submit" value="Upload" class="btn purple-gradient">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {%endblock%}

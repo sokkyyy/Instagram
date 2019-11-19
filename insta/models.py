@@ -11,7 +11,7 @@ class User(AbstractUser):
         try:
             user = cls.objects.get(username=username)
         except ObjectDoesNotExist:
-            user = ''
+            user = None
         return user
     
     @classmethod
