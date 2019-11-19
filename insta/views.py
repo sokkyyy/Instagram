@@ -105,7 +105,7 @@ def user_profile(request, username):
     {"profile":profile,"images":images,"comments":comments,
     "followers":followers, "following":following,"photo_form":photo_form,
     "is_following":is_following})
-
+@login_required(login_url='/login') 
 def post_pic(request):
     
     if request.method == 'POST':
@@ -127,6 +127,7 @@ def post_pic(request):
 
     return render(request,'post-pic.html',{"form":form})
 
+@login_required(login_url='/login') 
 def handle_follow(request,profile_username):
 
     user_followed = User.get_user(profile_username)
@@ -142,6 +143,8 @@ def handle_follow(request,profile_username):
 
     return redirect(user_profile,profile_username)
 
+
+@login_required(login_url='/login') 
 def handle_unfollow(request,profile_username):
     user_followed = User.get_user(profile_username)
     profile_followed = Profile.get_user_profile(user_followed)
@@ -155,6 +158,7 @@ def handle_unfollow(request,profile_username):
     
     return redirect(user_profile,profile_username)
 
+@login_required(login_url='/login') 
 def handle_like(request,image_id):
     user = request.user
     user_profile = Profile.get_user_profile(user)
@@ -168,6 +172,7 @@ def handle_like(request,image_id):
     return redirect(home)
 
 
+@login_required(login_url='/login') 
 def handle_unlike(request,image_id):
     user = request.user
     user_profile = Profile.get_user_profile(user)
@@ -181,7 +186,7 @@ def handle_unlike(request,image_id):
     
     return redirect(home)
 
-
+@login_required(login_url='/login') 
 def handle_like_comment(request,image_id):
     user = request.user
     user_profile = Profile.get_user_profile(user)
@@ -193,7 +198,7 @@ def handle_like_comment(request,image_id):
     image.likes += 1
     image.save()
     return redirect(comment_image,image_id)
-
+@login_required(login_url='/login') 
 def handle_unlike_comment(request,image_id):
     user = request.user
     user_profile = Profile.get_user_profile(user)
@@ -210,7 +215,7 @@ def handle_unlike_comment(request,image_id):
 
 
 
-
+@login_required(login_url='/login') 
 def edit_profile(request):
 
     user = request.user
@@ -240,6 +245,8 @@ def edit_profile(request):
     return render(request, 'edit_profile.html',
     {"form":form}) 
 
+
+@login_required(login_url='/login') 
 def search(request):
     if 'search' in request.GET and request.GET['search']:
         search_term = request.GET.get('search')
@@ -252,6 +259,8 @@ def search(request):
     else:
         return render(request, 'search.html')
 
+
+@login_required(login_url='/login') 
 def comment_image(request, image_id):
     find_image = Image.objects.get(pk=image_id)
     
@@ -277,6 +286,7 @@ def comment_image(request, image_id):
 
     return render(request, 'comment.html',{"image":image,"form":form,"comments":comments,"update_form":update_form,})
 
+@login_required(login_url='/login') 
 def update_bio(request,image_id):
 
     image = Image.objects.get(pk=image_id)
@@ -288,6 +298,8 @@ def update_bio(request,image_id):
             image.update_caption(caption)
             return redirect(comment_image,image_id)
 
+
+@login_required(login_url='/login') 
 def image_delete(request,image_id):
     image = Image.objects.get(pk=image_id)
     image.delete_image()
