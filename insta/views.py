@@ -19,11 +19,13 @@ def home(request):
 
 
     images = Like.has_user_liked(images_following,profile)
+
+    suggested_users = Profile.objects.all()
     
 
 
 
-    return render(request, 'home.html',{"images":images})
+    return render(request, 'home.html',{"images":images,"suggested_users":suggested_users})
 
 def register(request):
 

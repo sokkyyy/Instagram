@@ -77,7 +77,7 @@ class Image(models.Model):
 
     @classmethod
     def get_profile_images(cls,profile):
-        images = cls.objects.filter(profile=profile)
+        images = cls.objects.filter(profile=profile).order_by('-posted')
         return images
 
     @classmethod

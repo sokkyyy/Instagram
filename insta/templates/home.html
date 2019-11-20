@@ -41,6 +41,8 @@
                     <p style="font-weight: bold;">{{image.likes}} like</p>
                     {%endif%}
 
+                    
+
 
                 </div>
                 <a style="font-weight: bold;">{{image.profile.user.username}}</a> <span>{{image.caption}}</span>
@@ -51,10 +53,43 @@
                         {%endif%}
                     {%endfor%}
                 </div>
+                <div>
+                    <small>{{image.posted|timesince}}</small>
+                </div>
                
             </div>
         </div>
         {%endfor%}
+
+        {%if not images %}
+        <div class="container">
+            <div class="row" style="margin-top: 40px;">
+                <div class="container" style="margin-bottom: 20px;">
+                    <h5 class="text-center">SUGGESTED USERS</h5>
+                    <small class="text-center" style="margin-left: 400px;">Follow other users to view their posts on your Timeline.</small>
+                </div>
+            {% for profile in suggested_users %}
+            
+              <div class="col-sm-2 view overlay" style="background-image: url({{profile.profile_photo.url}});  
+              background-position: center; background-repeat: no-repeat; background-size: cover;
+              height:250px">
+                <a>
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+                <div class="mask rgba-black-strong flex-center waves-effect waves-light">
+                    <p class="white-text" style="font-weight: bold;">
+                        <span style="margin: 10px;">
+                          <a href="{% url 'profile' profile.user.username %}" class="white-text"> @{{profile.user.username}} </a>
+                        </span>
+                    </p>
+                </div>        
+    
+              </div>
+            
+            {%endfor%}
+          </div>
+        </div>
+        {%endif%}
 
     </div>
 </div>
