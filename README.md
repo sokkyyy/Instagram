@@ -16,7 +16,7 @@ As a user I can:
 ## Specifications
 | Behaviour | Input | Output |
 | :---------------- | :---------------: | ------------------: |
-| Display Login Page if user is not looged in | **On page load** | Login and Registration Options |
+| Display Login Page if user is not logged in | **On page load** | Login and Registration Options |
 | Display following pictures | **Follow Users on their profiles** | Other users pictures|
 | View picture details and comments | **Click 'picture name' on image overlay or 'Comment Icon'** | Comment page / Image details page |
 | Search for pictures and users |**Enter search term on the navigation bar 'Seach Bar'**|Displays users and images that meet the search term|
